@@ -1,0 +1,69 @@
+from abc import ABC, abstractmethod  # Used for abstraction
+
+# -----------------------------
+# 1. Encapsulation
+# -----------------------------
+class BankAccount:
+    def __init__(self, owner, balance):
+        self.owner = owner
+        self.__balance = balance  # Private variable (encapsulation)
+
+    # Controlled access (getter)
+    def get_balance(self):
+        return self.__balance
+
+    # Controlled access (setter)
+    def deposit(self, amount):
+        if amount > 0:
+            self.__balance += amount
+            print(f"Deposited {amount}. New balance: {self.__balance}")
+        else:
+            print("Deposit amount must be positive.")
+
+    def withdraw(self, amount):
+        if 0 < amount <= self.__balance:
+            self.__balance -= amount
+            print(f"Withdrew {amount}. New balance: {self.__balance}")
+        else:
+            print("Insufficient funds or invalid amount.")
+
+
+# -----------------------------
+# 2. Inheritance + Abstraction
+# -----------------------------
+class Account(ABC):  # Abstract class
+    def __init__(self, owner):
+        self.owner = owner
+
+    @abstractmethod
+    def account_type(self):
+        pass
+
+
+# -----------------------------
+# 3. Polymorphism (Overriding)
+# -----------------------------
+class SavingsAccount(Account):
+    def account_type(self):
+        return "Savings Account"
+
+class CurrentAccount(Account):
+    def account_type(self):
+        return "Current Account"
+
+
+# -----------------------------
+# 4. Demonstration
+# -----------------------------
+if __name__ == "__main__":
+    # Encapsulation example
+    acc = BankAccount("Victor", 1000)
+    acc.deposit(500)
+    acc.withdraw(200)
+    print("Final balance:", acc.get_balance())
+
+    # Inheritance + Polymorphism example
+    accounts = [SavingsAccount("Brian"), CurrentAccount("Mary")]
+
+    for a in accounts:
+        print(f"{a.owner} has a {a.account_type()}")
